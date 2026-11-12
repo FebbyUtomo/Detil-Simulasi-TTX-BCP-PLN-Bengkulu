@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skrip Final & Blocking Simulasi TTX BCP — PLN UPT Bengkulu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="skrip.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">⚡</div>
+            <h2>SKRIP TTX BCP</h2>
+            <span class="badge-pln">PLN UPT BENGKULU</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="showSection('dashboard', this)">
+                <span class="nav-icon">🏠</span>
+                <span>Dashboard & Dokumen</span>
+            </button>
+            <button class="nav-item" onclick="showSection('skenario', this)">
+                <span class="nav-icon">🎬</span>
+                <span>Naskah Scene (1–20)</span>
+            </button>
+            <button class="nav-item" onclick="showSection('pemeran', this)">
+                <span class="nav-icon">👥</span>
+                <span>Daftar 15 Pemeran</span>
+            </button>
+            <button class="nav-item" onclick="showSection('timeline', this)">
+                <span class="nav-icon">⏱️</span>
+                <span>Timeline 6 Fase</span>
+            </button>
+            <button class="nav-item" onclick="showSection('blocking', this)">
+                <span class="nav-icon">🗺️</span>
+                <span>Denah Blocking Ruangan</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-tv-link">
+            <a href="index.html" class="btn-goto-tv">
+                <span class="tv-icon">📺</span>
+                <div>
+                    <strong>LAYAR TV SIMULASI</strong>
+                    <small>Tampilan 16:9 Ruang Raflesia ↗</small>
+                </div>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="doc-ref">
+                <span class="ref-label">No. Referensi Dokumen</span>
+                <span class="ref-value">SKP/TTX.BCP/UPT-BKL/2026.002</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Bar Switcher -->
+        <div class="top-nav-bar">
+            <div class="top-info">
+                <span class="badge-status-live">● SKRIP FINAL BLOCKING TTX BCP</span>
+                <span class="top-date">07 November 2026 • Ruang Komando Raflesia</span>
+            </div>
+            <div class="top-actions">
+                <a href="index.html" class="top-btn-tv">
+                    📺 Buka Layar TV Simulasi (SCADA & CCTV) ↗
+                </a>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: DASHBOARD ==================== -->
+        <section id="section-dashboard" class="section active">
+            <header class="header">
+                <div>
+                    <h1>Skrip Final Blocking Simulasi TTX BCP</h1>
+                    <p class="subtitle">Skenario Bencana Gempa Bumi Tektonik 7,3 M & Blackout Wilayah Kerja PT PLN (Persero) UPT Bengkulu</p>
+                </div>
+            </header>
+
+            <!-- Identitas Dokumen & Lembar Pengesahan -->
+            <div class="doc-identity">
+                <div class="doc-row">
+                    <span class="doc-label">Judul Kegiatan</span>
+                    <span class="doc-value"><strong>Simulasi Tabletop Exercise (TTX) Rencana Keberlangsungan Usaha (Business Continuity Plan) Bencana Gempa Bumi Tektonik & Blackout</strong></span>
+                </div>
+                <div class="doc-row">
+                    <span class="doc-label">Nomor Referensi</span>
+                    <span class="doc-value"><code class="mono-code">SKP/TTX.BCP/UPT-BKL/2026.002</code></span>
+                </div>
+                <div class="doc-row">
+                    <span class="doc-label">Unit Pelaksana</span>
+                    <span class="doc-value">PT PLN (Persero) Unit Pelaksana Transmisi Bengkulu — UIP3B Sumatera</span>
+                </div>
+                <div class="doc-row">
+                    <span class="doc-label">Standar Acuan</span>
+                    <span class="doc-value">Edaran Direksi PT PLN (Persero) No. 0036.E/DIR/2022 • Instruksi KMRO No. 0001.I-KMRO-2023 • Pedoman Pemulihan Sistem Tenaga Listrik Sumatera No. PED/OPS/DOs/01/15/UIP3BS</span>
+                </div>
+                <div class="doc-row">
+                    <span class="doc-label">Fungsi Kritis Terdampak</span>
+                    <span class="doc-value">
+                        <strong>F1</strong> – Mengelola Operasi Sistem Tenaga Listrik (RTO: <strong>2 jam</strong>, MAO: <strong>6 jam</strong>)<br>
+                        <strong>F2</strong> – Mengelola Operasi Sistem Transmisi (Jaringan & GI) (RTO: <strong>1 minggu</strong>, MAO: <strong>1 bulan</strong>)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <section class="cards-grid">
+                <div class="card card-red">
+                    <div class="card-icon">🌋</div>
+                    <div class="card-info">
+                        <p class="card-label">Skenario Bencana</p>
+                        <h3 class="card-value">Gempa 7,3 M</h3>
+                        <p class="card-detail">45 km barat daya Bengkulu • Durasi 45 detik</p>
+                    </div>
+                </div>
+                <div class="card card-orange">
+                    <div class="card-icon">⚠️</div>
+                    <div class="card-info">
+                        <p class="card-label">Tingkat Risiko</p>
+                        <h3 class="card-value">Level 21</h3>
+                        <p class="card-detail">Katastropik (Gedung UPT & Gardu Induk retak)</p>
+                    </div>
+                </div>
+                <div class="card card-blue">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-info">
+                        <p class="card-label">Fungsi Kritis F1</p>
+                        <h3 class="card-value">RTO 2 Jam</h3>
+                        <p class="card-detail">Tercapai 1 jam 50 menit via Black-Start PLTA Tes</p>
+                    </div>
+                </div>
+                <div class="card card-green">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-info">
+                        <p class="card-label">Fungsi Kritis F2</p>
+                        <h3 class="card-value">RTO 1 Minggu</h3>
+                        <p class="card-detail">Tercapai Hari ke-5 (Interkoneksi & Penyaluran 100%)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lembar Pengesahan & Progress -->
+            <section class="charts-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>📋 Lembar Pengesahan Dokumen TTX</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Peran Tim BCM</th>
+                                <th>Jabatan Definitif</th>
+                                <th>Nama Pejabat</th>
+                                <th>Status Dokumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Ketua Tim BCM</strong></td>
+                                <td>Manager UPT Bengkulu</td>
+                                <td><span class="pejabat-name">DEVY MARTONI</span></td>
+                                <td><span class="status-badge status-sukses">✓ Dibuat &amp; Disahkan</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Business Continuity Director</strong></td>
+                                <td>General Manager UIP3BS</td>
+                                <td><span class="pejabat-name">ELVANTO YANUAR IKHSAN</span></td>
+                                <td><span class="status-badge status-sukses">✓ Dibuat &amp; Disahkan</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>⏱️ Target RTO vs Realisasi Aktual</h3>
+                    </div>
+                    <canvas id="recoveryChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Chart Tambahan -->
+            <section class="charts-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>🎬 Distribusi 20 Scene per Fase Simulasi</h3>
+                    </div>
+                    <canvas id="phaseChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>👥 Alokasi Kehadiran Pemeran (15 Personel)</h3>
+                    </div>
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </section>
+        </section>
+
+        <!-- ==================== SECTION: SKENARIO ==================== -->
+        <section id="section-skenario" class="section">
+            <header class="header">
+                <div>
+                    <h1>🎬 Naskah Scene by Scene (1 s.d. 20)</h1>
+                    <p class="subtitle">Panduan jalannya dialog, blocking pemeran, dan cue visual monitor ruang komando.</p>
+                </div>
+                <div class="scene-search-box">
+                    <input type="text" id="sceneSearchInput" placeholder="🔍 Cari adegan, tokoh, atau kata kunci..." oninput="searchScenes(this.value)">
+                </div>
+            </header>
+
+            <!-- Fase Navigator -->
+            <div class="fase-nav">
+                <button class="fase-btn active" onclick="filterFase('all', this)">Semua (20 Scene)</button>
+                <button class="fase-btn" onclick="filterFase(1, this)">Fase 1: ERP (Scene 1–5)</button>
+                <button class="fase-btn" onclick="filterFase(2, this)">Fase 2: Aktivasi BCP (Scene 6–9)</button>
+                <button class="fase-btn" onclick="filterFase(3, this)">Fase 3: CMP (Scene 10–14)</button>
+                <button class="fase-btn" onclick="filterFase(4, this)">Fase 4: BRP (Scene 15–16)</button>
+                <button class="fase-btn" onclick="filterFase(5, this)">Fase 5: Recovery (Scene 17–19)</button>
+                <button class="fase-btn" onclick="filterFase(6, this)">Fase 6: AAR (Scene 20)</button>
+            </div>
+
+            <div id="sceneContainer" class="scene-grid">
+                <!-- Diisi oleh JavaScript -->
+            </div>
+        </section>
+
+        <!-- ==================== SECTION: PEMERAN ==================== -->
+        <section id="section-pemeran" class="section">
+            <header class="header">
+                <div>
+                    <h1>👥 Daftar 15 Pemeran & Alokasi Peran BCM</h1>
+                    <p class="subtitle">Struktur tim simulasi, tugas spesifik, dan mode kehadiran di Ruang Komando</p>
+                </div>
+            </header>
+            <div class="chart-container">
+                <table class="data-table" id="pemeranTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pemeran</th>
+                            <th>Jabatan Struktural / Kedinasan</th>
+                            <th>Peran dalam Tim BCM / Simulasi</th>
+                            <th>Mode Kehadiran</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================== SECTION: TIMELINE ==================== -->
+        <section id="section-timeline" class="section">
+            <header class="header">
+                <div>
+                    <h1>⏱️ Linimasa & Alur 6 Fase Simulasi</h1>
+                    <p class="subtitle">Kronologi waktu tanggap darurat dari menit ke-0 hingga hari ke-15 penutupan BCP</p>
+                </div>
+            </header>
+            <div class="timeline-container">
+                <!-- Diisi oleh JavaScript -->
+            </div>
+        </section>
+
+        <!-- ==================== SECTION: BLOCKING ==================== -->
+        <section id="section-blocking" class="section">
+            <header class="header">
+                <div>
+                    <h1>🗺️ Sketsa Tata Letak Set (Blocking Ruangan)</h1>
+                    <p class="subtitle">Peta Posisional Set Komando Utama di Ruang Raflesia & Transisi ke Alternate Site</p>
+                </div>
+            </header>
+            
+            <div class="blocking-card-info">
+                <strong>Ketentuan Blocking:</strong> Simulasi dilaksanakan menggunakan satu ruangan komando utama dengan transformasi visual tata letak (blocking set) saat terjadi transisi dari Posko Utama ke Posko Alternatif (Alternate Site GI Sukamerindu).
+            </div>
+
+            <div class="blocking-layout">
+                <div class="room-container">
+                    <!-- Monitor Utama Depan -->
+                    <div class="room-section room-front">
+                        <div class="room-label">AREA DEPAN RUANGAN KOMANDO</div>
+                        <div class="monitor-main">
+                            <span class="monitor-icon">🖥️</span>
+                            <div>
+                                <strong>Monitor Utama Layar Lebar (TV 16:9)</strong>
+                                <p>Menampilkan Peta Guncangan Gempa Bengkulu, Diagram Single Line Grid 150 kV, Status Telemetri SCADA, dan Video Call Direktur/GM.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Facilitator -->
+                    <div class="room-section room-facilitator">
+                        <div class="person-badge facilitator">
+                            <span class="p-icon">🎤</span>
+                            <div>
+                                <strong>Facilitator / Moderator (Specialist Risk &amp; Continuity)</strong>
+                                <p>Berdiri di depan monitor utama — Mengendalikan dinamika &amp; waktu Inject Skenario</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meja Utama Komando -->
+                    <div class="room-section room-table">
+                        <div class="table-visual">
+                            <!-- Kepala Meja -->
+                            <div class="table-head">
+                                <div class="person-badge head">
+                                    <span class="p-icon">⭐</span>
+                                    <div>
+                                        <strong>Devy Martoni</strong>
+                                        <p>Manager UPT Bengkulu / Koordinator BCP UPT (Kepala Meja)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris Meja: Kiri, Meja Fisik, Kanan -->
+                            <div class="table-sides">
+                                <div class="table-left">
+                                    <div class="side-title">SISI KIRI MEJA</div>
+                                    <div class="person-badge">
+                                        <span class="p-icon">👤</span>
+                                        <div><strong>Joffrian M</strong><p>Asman Renval • Tim Sekretariat BCM &amp; Evaluator</p></div>
+                                    </div>
+                                    <div class="person-badge">
+                                        <span class="p-icon">👤</span>
+                                        <div><strong>Arnold Siagian</strong><p>Asman Keu &amp; Umum • Koordinator Logistik &amp; Alternate Site</p></div>
+                                    </div>
+                                </div>
+
+                                <div class="table-center-block">
+                                    <div class="table-shape">
+                                        <div class="table-inner-text">MEJA KOMANDO UTAMA<br><small>RUANG RAFLESIA</small></div>
+                                    </div>
+                                </div>
+
+                                <div class="table-right">
+                                    <div class="side-title">SISI KANAN MEJA</div>
+                                    <div class="person-badge">
+                                        <span class="p-icon">👤</span>
+                                        <div><strong>Rio Rona Andika</strong><p>Asman Konlan • Koordinator Tim Teknis Pemulihan F2</p></div>
+                                    </div>
+                                    <div class="person-badge">
+                                        <span class="p-icon">👤</span>
+                                        <div><strong>Rachmad Fajar</strong><p>Asman PDKB • Koordinator Penanganan Darurat Jalur</p></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sisi Tengah Meja -->
+                            <div class="table-middle">
+                                <div class="side-title" style="width:100%;text-align:center;margin-bottom:8px">SISI TENGAH MEJA</div>
+                                <div class="person-badge">
+                                    <span class="p-icon">👤</span>
+                                    <div><strong>Asrul Abdika Hasibuan</strong><p>Manager ULTG Pekalongan • PIC ERP/CMP Wil. Utara</p></div>
+                                </div>
+                                <div class="person-badge">
+                                    <span class="p-icon">👤</span>
+                                    <div><strong>Muhammad Afrizal</strong><p>Manager ULTG Lahat • PIC ERP/CMP Wil. Selatan</p></div>
+                                </div>
+                                <div class="person-badge">
+                                    <span class="p-icon">👤</span>
+                                    <div><strong>Hendra Herawan</strong><p>TL K3L &amp; KAM • Keselamatan Jiwa &amp; Akses</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub Monitor Kanan -->
+                    <div class="room-section room-submonitor">
+                        <div class="room-label">SISI KANAN RUANGAN</div>
+                        <div class="monitor-sub">
+                            <span class="monitor-icon">📺</span>
+                            <div>
+                                <strong>Layar Sub-Monitor Kanan (Video Conference Terenkripsi)</strong>
+                                <p>Tersambung langsung ke Posko Komando UIP3B Sumatera (GM Elvanto Yanuar &amp; Para SM) serta Direktur Transmisi &amp; Perencanaan Sistem PT PLN (Persero) Pusat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="skrip.js"></script>
+</body>
+</html>
+
