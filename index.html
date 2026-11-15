@@ -122,7 +122,7 @@ header{display:flex;gap:10px;align-items:stretch;flex-wrap:nowrap}
 .qfact{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;display:flex;flex-direction:column;justify-content:center;min-width:0}
 .qfact .k{font-size:10px;color:var(--dim);font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .qfact .v{font-size:16.5px;font-weight:700;line-height:1.15}
-.qfact .v.red{color:#ff7a72}.qfact .v.yel{color:var(--yellow)}
+.qfact .v.red{color:#ff7a72}.qfact .v.green{color:#4ade80}.qfact .v.yel{color:var(--yellow)}
 .qfact.risk{text-align:left}
 .qfact.risk .v{font-size:16.5px;line-height:1.2;white-space:nowrap}
 .qfact.epi .v{font-size:14.5px}
@@ -316,11 +316,11 @@ footer .sp{flex:1}
       <section class="card" aria-label="Informasi gempa">
         <h3><span class="dot"></span>Info Gempa — Skenario TTX<span class="qphase" id="quakePhase">FASE 0 (PRA) • 07.55 WIB</span><span class="r">SUMBER: NASKAH TTX</span></h3>
         <div class="quake-hero">
-          <div class="qfact" style="grid-area:waktu"><div class="k">Waktu</div><div class="v">08.00 WIB</div></div>
-          <div class="qfact" style="grid-area:durasi"><div class="k">Durasi Guncangan</div><div class="v" style="font-size:15px">45 detik</div></div>
-          <div class="qfact epi" style="grid-area:epi"><div class="k">Episentrum</div><div class="v">45 km barat daya Kota Bengkulu</div></div>
-          <div class="mag"><b>7,3</b><span>MAGNITUDO</span></div>
-          <div class="qfact risk" style="grid-area:risiko"><div class="k">Level Risiko</div><div class="v red">21 — KATASTROPIK</div></div>
+          <div class="qfact" style="grid-area:waktu"><div class="k">Waktu</div><div class="v" id="quakeTime">07.55 WIB</div></div>
+          <div class="qfact" style="grid-area:durasi"><div class="k">Durasi Guncangan</div><div class="v" id="quakeDur" style="font-size:15px">—</div></div>
+          <div class="qfact epi" style="grid-area:epi"><div class="k">Episentrum</div><div class="v" id="quakeEpi">—</div></div>
+          <div class="mag" id="quakeMagBox" style="background:#22c55e"><b id="quakeMag">—</b><span id="quakeMagLabel">MAGNITUDO</span></div>
+          <div class="qfact risk" style="grid-area:risiko"><div class="k">Level Risiko</div><div class="v green" id="quakeRisk">NORMAL</div></div>
         </div>
         <div class="seismo">
           <div class="slab"><span>SEISMOGRAF — STASIUN BENGKULU (SIMULASI)</span><span class="mono" id="seisLabel">AKTIVITAS NORMAL</span></div>
@@ -581,6 +581,7 @@ footer .sp{flex:1}
 (function(){
   var PHASES=[
     { name:"FASE 0 (PRA)", sim:"07:55:00", simShort:"07 NOV • 07:55:00",
+      quake:{time:"07.55 WIB",dur:"—",epi:"—",mag:"—",magLabel:"MAGNITUDO",risk:"NORMAL",riskCls:"green"},
       bannerCls:"b-green", icon:"✅", title:"Sistem Normal — Siaga Operasi",
       text:"Seluruh instalasi transmisi Provinsi Bengkulu beroperasi normal. TTX BCP dimulai pukul 08.00 WIB.",
       load:100, loadSub:"Sistem normal, seluruh GI bertegangan", loadCls:"good", barLabel:"NORMAL 100%",
@@ -597,6 +598,7 @@ footer .sp{flex:1}
       ticker:"SISTEM TRANSMISI PROVINSI BENGKULU NORMAL +++ SELURUH GARDU INDUK BERTEGANGAN +++ TTX BCP GEMPA BUMI & BLACKOUT DIMULAI PUKUL 08.00 WIB +++ TETAP TENANG DAN IKUTI ARAHAN PETUGAS +++ "
     },
     { name:"FASE 1 — BLACKOUT", sim:"08:00:45", simShort:"07 NOV • 08:00:45",
+      quake:{time:"08.00 WIB",dur:"45 detik",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
       bannerCls:"b-red", icon:"🚨", title:"⚠ Gempa 7,3 M — Blackout Total Provinsi Bengkulu",
       text:"SUTT 150 kV Pekalongan – Sukamerindu – Pulau Baai – Manna trip bersamaan. Telemetri SCADA drop, komunikasi serat optik & seluler lumpuh di beberapa GI. Level Risiko 21 — Katastropik.",
       load:0, loadSub:"BLACKOUT TOTAL — penyaluran padam 100%", loadCls:"danger", barLabel:"PADAM 100% — 0%",
@@ -613,6 +615,7 @@ footer .sp{flex:1}
       ticker:"DARURAT +++ GEMPA 7,3 M PUKUL 08.00 WIB — EPISENTRUM 45 KM BARAT DAYA KOTA BENGKULU +++ BLACKOUT TOTAL PROVINSI BENGKULU +++ 103 PERSONEL 100% SELAMAT — ZERO ACCIDENT +++ GI TES & GI PULAU BAAI HILANG KONTAK +++ EVAKUASI KE TITIK KUMPUL — JANGAN MASUK KEMBALI KE GEDUNG +++ "
     },
     { name:"FASE 2 — REKOMENDASI BCP", sim:"09:00:00", simShort:"07 NOV • 09:00:00",
+      quake:{time:"09.00 WIB",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"5,0–5,5",magLabel:"MAGNITUDO • SUSULAN",risk:"21 — KATASTROPIK",riskCls:"red"},
       bannerCls:"b-amber", icon:"⚠️", title:"BCP Direkomendasikan — RTO F1 Terancam",
       text:"Satu jam pascagempa sistem belum pulih. Business Continuity Plan direkomendasikan untuk diaktifkan; target RTO F1 (2 jam) terancam terlampaui.",
       load:0, loadSub:"Masih blackout — menunggu black-start PLTA Tes", loadCls:"danger", barLabel:"PADAM 100% — 0%",
@@ -620,7 +623,7 @@ footer .sp{flex:1}
       giOn:"0", giOnSub:"Asesmen & persiapan black-start berjalan",
       scada:"TERBATAS", scadaSub:"Komunikasi satelit dari Alternate Site",
       seis:"GEMPA SUSULAN RINGAN", seisAmp:6, seisColor:"#f59e0b",
-      quakeNote:"Guncangan utama berlalu. Tim melakukan asesmen kerusakan: 1 trafo rusak bushing (GI Sukamerindu), 2 GI terisolasi (Tes & Pulau Baai), konduktor SUTT putus, 2 jalur akses tertutup longsor.",
+      quakeNote:"Guncangan utama berlalu. Tim melakukan asesmen kerusakan: 1 trafo rusak bushing (GI Sukamerindu), 2 GI terisolasi (Tes & Pulau Baai), konduktor SUTT putus, 2 jalur akses tertutup longsor. Gempa susulan 5,0–5,5 M masih mungkin terjadi.",
       chartPt:[232,158], chartProg:"70,26 215,26 232,158",
       rtoF1:"TERANCAM — SISA ±50 MENIT", rtoF1Cls:"risk", rtoF2:"BELUM BERJALAN", rtoF2Cls:"",
       cctvMode:"LIVE • ASESMEN", camLabel:"ASESMEN PASCA-GEMPA", camCls:"", lost:["cam2"],
@@ -629,6 +632,7 @@ footer .sp{flex:1}
       ticker:"BCP DIREKOMENDASIKAN +++ POSKO PINDAH KE ALTERNATE SITE GI SUKAMERINDU +++ PERSIAPAN BLACK-START PLTA TES +++ RTO F1 — TARGET 2 JAM — TERANCAM +++ BANTUAN UPT LUBUK LINGGAU & UPT PALEMBANG DIMINTA +++ 103 PERSONEL SELAMAT — ZERO ACCIDENT +++ "
     },
     { name:"FASE 3 — BCP AKTIF", sim:"09:50:00", simShort:"07 NOV • 09:50:00",
+      quake:{time:"09.50 WIB",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
       bannerCls:"b-cyan", icon:"⚡", title:"Black-Start PLTA Tes Berhasil — BCP Resmi Aktif, RTO F1 Tercapai",
       text:"Pukul 09.50 WIB (1 jam 50 menit) tegangan masuk busbar GI Tes & GI Pekalongan — island system terbentuk. BCP resmi diaktifkan oleh Direktur Transmisi.",
       load:12, loadSub:"Island system — beban prioritas / MBCO terlayani", loadCls:"warn", barLabel:"ISLAND SYSTEM — MBCO 8.135 MW",
@@ -645,6 +649,7 @@ footer .sp{flex:1}
       ticker:"BLACK-START PLTA TES BERHASIL 09.50 WIB +++ ISLAND SYSTEM GI TES — GI PEKALONGAN TERBENTUK +++ RTO F1 TERCAPAI — 1 JAM 50 MENIT +++ BCP RESMI DIAKTIFKAN DIREKTUR TRANSMISI +++ MBCO 8.135 MW: RS M. YUNUS — BANDARA FATMAWATI — KANTOR GUBERNUR +++ TRAFO MOBILE 30 MVA UPT LUBUK LINGGAU DALAM PERJALANAN +++ "
     },
     { name:"FASE 4 — PEMULIHAN", sim:"HARI KE-5", simShort:"12 NOV • PEMULIHAN",
+      quake:{time:"Hari ke-5",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
       bannerCls:"b-blue", icon:"🔧", title:"Interkoneksi Kembali — Penyaluran Pulih 100%, RTO F2 Tercapai",
       text:"Hari ke-3 longsor dibersihkan BPBD + PLN dan interkoneksi Pekalongan–Tes–Sukamerindu kembali. Hari ke-5 komisioning Trafo 1 GI Sukamerindu & re-energizing SUTT Pulau Baai lulus 100%.",
       load:100, loadSub:"Pulih 100% ke seluruh kabupaten/kota", loadCls:"good", barLabel:"PULIH 100% — HARI KE-5",
@@ -661,6 +666,7 @@ footer .sp{flex:1}
       ticker:"PENYALURAN PULIH 100% — HARI KE-5 +++ INTERKoneksi PEKALONGAN–TES–SUKAMERINDU KEMBALI +++ KOMISIONING TRAFO 1 GI SUKAMERINDU LULUS 100% +++ RTO F2 TERCAPAI — 5 HARI DARI TARGET 1 MINGGU +++ TERIMA KASIH BPBD, UPT LUBUK LINGGAU & UPT PALEMBANG +++ "
     },
     { name:"FASE 5 — BCP DITUTUP", sim:"HARI KE-15", simShort:"22 NOV • RE-ENTRY",
+      quake:{time:"Hari ke-15",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"NORMAL — BCP DITUTUP",riskCls:"green"},
       bannerCls:"b-green", icon:"🏁", title:"BCP Resmi Ditutup — Re-Entry 100%, Zero Accident",
       text:"Kantor UPT Bengkulu selesai renovasi dan dinyatakan aman (safety cleared) oleh Tim K3L. Seluruh pegawai kembali bekerja — BCP resmi ditutup.",
       load:100, loadSub:"Operasi normal penuh", loadCls:"good", barLabel:"NORMAL 100%",
@@ -852,6 +858,12 @@ footer .sp{flex:1}
     $("seisLabel").textContent=P.seis; $("seisLabel").style.color=P.seisColor;
     window._seisAmp=P.seisAmp; window._seisColor=P.seisColor;
     $("quakeNote").textContent=P.quakeNote;
+    // info gempa per fase
+    var Q=P.quake;
+    $("quakeTime").textContent=Q.time; $("quakeDur").textContent=Q.dur; $("quakeEpi").textContent=Q.epi;
+    var qm=$("quakeMag"); qm.textContent=Q.mag; qm.style.fontSize=(String(Q.mag).length>4?"38px":"58px");
+    $("quakeMagLabel").textContent=Q.magLabel; $("quakeMagBox").style.background=P.seisColor;
+    var qr=$("quakeRisk"); qr.textContent=Q.risk; qr.className="v "+Q.riskCls;
     // cctv
     $("cctvMode").textContent=P.cctvMode;
     document.querySelectorAll("[data-camlabel]").forEach(function(el){ el.textContent=P.camLabel; el.className="clabel "+P.camCls; });
