@@ -81,6 +81,11 @@ header{display:flex;gap:10px;align-items:stretch;flex-wrap:nowrap}
 .banner .bphase{margin-left:auto;text-align:right;flex-shrink:0}
 .banner .bphase .lab{font-size:10.5px;font-weight:700;letter-spacing:.14em;opacity:.75}
 .banner .bphase .val{font-family:"JetBrains Mono";font-weight:700;font-size:19px}
+.banner .btimer{margin-left:8px;text-align:right;flex-shrink:0}
+.banner .btimer .lab{font-size:10.5px;font-weight:700;letter-spacing:.14em;opacity:.75}
+.banner .btimer .val{font-family:"JetBrains Mono";font-weight:700;font-size:19px}
+.banner .btimer .sub{font-size:10px;font-weight:700;letter-spacing:.1em;opacity:.6}
+.banner .btimer.urgent .val{color:#ff7a72}
 .b-green{background:#06270f;border-color:#1d5c2e;color:#d9ffe2}
 .b-red{background:var(--redbg);border-color:var(--red);color:#ffe3e0;animation:bannerpulse 1s ease-in-out infinite}
 @keyframes bannerpulse{50%{box-shadow:0 0 0 4px rgba(255,59,48,.25)}}
@@ -292,6 +297,7 @@ footer .sp{flex:1}
       <p id="bannerText">Seluruh instalasi transmisi Provinsi Bengkulu beroperasi normal. TTX BCP dimulai pukul 08.00 WIB.</p>
     </div>
     <div class="bphase"><div class="lab">FASE AKTIF</div><div class="val" id="bannerPhase">FASE 0 (PRA)</div></div>
+    <div class="btimer" id="phaseTimerBox"><div class="lab">SISA WAKTU FASE</div><div class="val" id="phaseTimer">05:00</div><div class="sub" id="phaseTimerTotal">DURASI 5 MENIT</div></div>
   </div>
 
   <!-- PHASE CONTROLS -->
@@ -582,6 +588,7 @@ footer .sp{flex:1}
   var PHASES=[
     { name:"FASE 0 (PRA)", sim:"07:55:00", simShort:"07 NOV • 07:55:00",
       quake:{time:"07.55 WIB",dur:"—",epi:"—",mag:"—",magLabel:"MAGNITUDO",risk:"NORMAL",riskCls:"green"},
+      dur:300,durLabel:"5 MENIT",
       bannerCls:"b-green", icon:"✅", title:"Sistem Normal — Siaga Operasi",
       text:"Seluruh instalasi transmisi Provinsi Bengkulu beroperasi normal. TTX BCP dimulai pukul 08.00 WIB.",
       load:100, loadSub:"Sistem normal, seluruh GI bertegangan", loadCls:"good", barLabel:"NORMAL 100%",
@@ -599,6 +606,7 @@ footer .sp{flex:1}
     },
     { name:"FASE 1 — BLACKOUT", sim:"08:00:45", simShort:"07 NOV • 08:00:45",
       quake:{time:"08.00 WIB",dur:"45 detik",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
+      dur:3600,durLabel:"60 MENIT",
       bannerCls:"b-red", icon:"🚨", title:"⚠ Gempa 7,3 M — Blackout Total Provinsi Bengkulu",
       text:"SUTT 150 kV Pekalongan – Sukamerindu – Pulau Baai – Manna trip bersamaan. Telemetri SCADA drop, komunikasi serat optik & seluler lumpuh di beberapa GI. Level Risiko 21 — Katastropik.",
       load:0, loadSub:"BLACKOUT TOTAL — penyaluran padam 100%", loadCls:"danger", barLabel:"PADAM 100% — 0%",
@@ -616,6 +624,7 @@ footer .sp{flex:1}
     },
     { name:"FASE 2 — REKOMENDASI BCP", sim:"09:00:00", simShort:"07 NOV • 09:00:00",
       quake:{time:"09.00 WIB",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"5,0–5,5",magLabel:"MAGNITUDO • SUSULAN",risk:"21 — KATASTROPIK",riskCls:"red"},
+      dur:3600,durLabel:"60 MENIT",
       bannerCls:"b-amber", icon:"⚠️", title:"BCP Direkomendasikan — RTO F1 Terancam",
       text:"Satu jam pascagempa sistem belum pulih. Business Continuity Plan direkomendasikan untuk diaktifkan; target RTO F1 (2 jam) terancam terlampaui.",
       load:0, loadSub:"Masih blackout — menunggu black-start PLTA Tes", loadCls:"danger", barLabel:"PADAM 100% — 0%",
@@ -633,6 +642,7 @@ footer .sp{flex:1}
     },
     { name:"FASE 3 — BCP AKTIF", sim:"09:50:00", simShort:"07 NOV • 09:50:00",
       quake:{time:"09.50 WIB",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
+      dur:79200,durLabel:"22 JAM",
       bannerCls:"b-cyan", icon:"⚡", title:"Black-Start PLTA Tes Berhasil — BCP Resmi Aktif, RTO F1 Tercapai",
       text:"Pukul 09.50 WIB (1 jam 50 menit) tegangan masuk busbar GI Tes & GI Pekalongan — island system terbentuk. BCP resmi diaktifkan oleh Direktur Transmisi.",
       load:12, loadSub:"Island system — beban prioritas / MBCO terlayani", loadCls:"warn", barLabel:"ISLAND SYSTEM — MBCO 8.135 MW",
@@ -650,6 +660,7 @@ footer .sp{flex:1}
     },
     { name:"FASE 4 — PEMULIHAN", sim:"HARI KE-5", simShort:"12 NOV • PEMULIHAN",
       quake:{time:"Hari ke-5",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"21 — KATASTROPIK",riskCls:"red"},
+      dur:518400,durLabel:"6 HARI",
       bannerCls:"b-blue", icon:"🔧", title:"Interkoneksi Kembali — Penyaluran Pulih 100%, RTO F2 Tercapai",
       text:"Hari ke-3 longsor dibersihkan BPBD + PLN dan interkoneksi Pekalongan–Tes–Sukamerindu kembali. Hari ke-5 komisioning Trafo 1 GI Sukamerindu & re-energizing SUTT Pulau Baai lulus 100%.",
       load:100, loadSub:"Pulih 100% ke seluruh kabupaten/kota", loadCls:"good", barLabel:"PULIH 100% — HARI KE-5",
@@ -667,6 +678,7 @@ footer .sp{flex:1}
     },
     { name:"FASE 5 — BCP DITUTUP", sim:"HARI KE-15", simShort:"22 NOV • RE-ENTRY",
       quake:{time:"Hari ke-15",dur:"45 detik (berlalu)",epi:"45 km barat daya Kota Bengkulu",mag:"7,3",magLabel:"MAGNITUDO",risk:"NORMAL — BCP DITUTUP",riskCls:"green"},
+      dur:1296000,durLabel:"15 HARI",
       bannerCls:"b-green", icon:"🏁", title:"BCP Resmi Ditutup — Re-Entry 100%, Zero Accident",
       text:"Kantor UPT Bengkulu selesai renovasi dan dinyatakan aman (safety cleared) oleh Tim K3L. Seluruh pegawai kembali bekerja — BCP resmi ditutup.",
       load:100, loadSub:"Operasi normal penuh", loadCls:"good", barLabel:"NORMAL 100%",
@@ -755,7 +767,10 @@ footer .sp{flex:1}
   var lineBase={llgbko:"#2563eb",llglah:"#2563eb",lahlum:"#2563eb"};
   var lineIds={pltates:"ln-plta-tes",tespek:"ln-tes-pek",peksuk:"ln-pek-suk",pekpba:"ln-pek-pba",pbaarg:"ln-pba-arg",manbin:"ln-man-bin",pekllg:"ln-pek-llg",llgela:"ln-llg-ela",llglah:"ln-llg-lah",lahpag:"ln-lah-pag",llgbko:"ln-llg-bko",lahbas:"ln-lah-bas",lahlum:"ln-lah-lum",muspek:"ln-mus-pek",pagman:"ln-pag-man",tesair:"ln-tes-air",kettap:"ln-ket-tap",pbapltu:"ln-pba-pltu"};
 
-  var cur=0, autoTimer=null;
+  var cur=0, autoTimer=false;
+  var remain=0;
+  function fmtT(s){ s=Math.max(0,Math.round(s)); var d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),ss=s%60,p=function(n){return (n<10?"0":"")+n}; if(d>0) return d+" hari "+p(h)+":"+p(m)+":"+p(ss); if(h>0) return p(h)+":"+p(m)+":"+p(ss); return p(m)+":"+p(ss); }
+  function drawTimer(){ var el=$("phaseTimer"); if(!el) return; el.textContent=fmtT(remain); var box=$("phaseTimerBox"); if(box) box.classList.toggle("urgent", remain>0 && remain<=60); }
   // --- Animasi tambahan (Anime.js v4 UMD + Lottie + Ola), 15 Nov 2026 ---
   // Semua pemakaian di-guarded: bila salah satu lib gagal dimuat, halaman tetap jalan seperti semula.
   var AN=(typeof window.anime!=="undefined")?window.anime:null;
@@ -809,6 +824,7 @@ footer .sp{flex:1}
   }
   function setPhase(p){
     cur=p; var P=PHASES[p];
+    remain=P.dur; $("phaseTimerTotal").textContent="DURASI "+P.durLabel; drawTimer();
     document.body.classList.toggle("shaking", p===1);
     var btns=document.querySelectorAll(".phasebtn");
     btns.forEach(function(b){ b.classList.toggle("active", +b.getAttribute("data-phase")===p); });
@@ -915,11 +931,11 @@ footer .sp{flex:1}
   document.querySelectorAll(".phasebtn").forEach(function(b){
     b.addEventListener("click",function(){ stopAuto(); setPhase(+b.getAttribute("data-phase")); });
   });
-  function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; $("autoBtn").textContent="▶ PUTAR OTOMATIS"; $("autoBtn").classList.remove("on"); $("autoBtn").setAttribute("aria-pressed","false"); } }
+  function stopAuto(){ if(autoTimer){ autoTimer=false; $("autoBtn").textContent="▶ PUTAR OTOMATIS"; $("autoBtn").classList.remove("on"); $("autoBtn").setAttribute("aria-pressed","false"); } }
   $("autoBtn").addEventListener("click",function(){
     if(autoTimer){ stopAuto(); return; }
     this.textContent="⏸ JEDA OTOMATIS"; this.classList.add("on"); this.setAttribute("aria-pressed","true");
-    autoTimer=setInterval(function(){ setPhase((cur+1)%PHASES.length); },10000);
+    autoTimer=true; if(remain<=0){ setPhase((cur+1)%PHASES.length); }
   });
   $("fsBtn").addEventListener("click",function(){
     if(document.fullscreenElement){ document.exitFullscreen(); }
@@ -945,6 +961,7 @@ footer .sp{flex:1}
     var line=$("seisLine"); line.setAttribute("points",pts); line.setAttribute("stroke",col);
   }
   setInterval(drawSeis,110);
+  setInterval(function(){ if(remain>0){ remain--; drawTimer(); if(remain===0 && autoTimer){ setPhase((cur+1)%PHASES.length); } } },1000);
   initAnimLibs();
   setPhase(0);
 })();
