@@ -250,6 +250,12 @@ footer .sp{flex:1}
 
 .ctl a.ctl-link{display:flex;align-items:center;justify-content:center;border-radius:10px;border:1.5px solid #f59e0b;background:rgba(245,158,11,0.18);color:#fbbf24;font-weight:700;padding:6px 14px;font-size:12.5px;text-decoration:none;transition:all .2s;letter-spacing:.04em;white-space:nowrap}
 .ctl a.ctl-link:hover{background:#f59e0b;color:#111;box-shadow:0 0 12px rgba(245,158,11,0.5)}
+/* === Animasi tambahan (Anime.js/Lottie/Ola) — 15 Nov 2026 === */
+.lottie-ring{width:64px;height:64px;flex:0 0 auto;display:none;align-self:center}
+.banner.alert-on .lottie-ring{display:block}
+.lottie-ring svg{width:100%;height:100%}
+.rto-check{display:inline-block;width:26px;height:26px;vertical-align:-7px;margin-left:6px}
+.rto-check svg{width:100%;height:100%}
 </style>
 </head>
 <body>
@@ -280,7 +286,7 @@ footer .sp{flex:1}
 
   <!-- ALERT BANNER -->
   <div class="banner b-green" id="banner">
-    <div class="bic" id="bannerIcon">✅</div>
+    <div class="bic" id="bannerIcon">✅</div><div class="lottie-ring" id="alertRing" aria-hidden="true"></div>
     <div>
       <h2 id="bannerTitle">Sistem Normal — Siaga Operasi</h2>
       <p id="bannerText">Seluruh instalasi transmisi Provinsi Bengkulu beroperasi normal. TTX BCP dimulai pukul 08.00 WIB.</p>
@@ -470,8 +476,8 @@ footer .sp{flex:1}
           </svg>
         </div>
         <div class="rto">
-          <div class="rtobox" id="rtoF1"><div class="k">F1 — Operasi Sistem • RTO 2 Jam • MAO 6 Jam</div><b>Black-start PLTA Tes 09.50 WIB (1 jam 50 menit)</b><span class="badge" id="rtoF1Badge">MENUNGGU KEJADIAN</span></div>
-          <div class="rtobox" id="rtoF2"><div class="k">F2 — Operasi Transmisi • RTO 1 Minggu • MAO 1 Bulan</div><b>Penyaluran pulih 100% pada hari ke-5</b><span class="badge" id="rtoF2Badge">MENUNGGU KEJADIAN</span></div>
+          <div class="rtobox" id="rtoF1"><div class="k">F1 — Operasi Sistem • RTO 2 Jam • MAO 6 Jam</div><b>Black-start PLTA Tes 09.50 WIB (1 jam 50 menit)</b><span class="badge" id="rtoF1Badge">MENUNGGU KEJADIAN</span><span class="rto-check" id="rtoCheck1"></span></div>
+          <div class="rtobox" id="rtoF2"><div class="k">F2 — Operasi Transmisi • RTO 1 Minggu • MAO 1 Bulan</div><b>Penyaluran pulih 100% pada hari ke-5</b><span class="badge" id="rtoF2Badge">MENUNGGU KEJADIAN</span><span class="rto-check" id="rtoCheck2"></span></div>
         </div>
         <div class="prio">
           <div class="p"><b>MBCO 8.135 MW</b><span>Minimum beban operasi saat island system</span></div>
@@ -568,6 +574,9 @@ footer .sp{flex:1}
   </footer>
 </div>
 
+<script src="vendor/anime.umd.min.js"></script>
+<script src="vendor/lottie.min.js"></script>
+<script src="vendor/ola.min.js"></script>
 <script>
 (function(){
   var PHASES=[
@@ -741,6 +750,28 @@ footer .sp{flex:1}
   var lineIds={pltates:"ln-plta-tes",tespek:"ln-tes-pek",peksuk:"ln-pek-suk",pekpba:"ln-pek-pba",pbaarg:"ln-pba-arg",manbin:"ln-man-bin",pekllg:"ln-pek-llg",llgela:"ln-llg-ela",llglah:"ln-llg-lah",lahpag:"ln-lah-pag",llgbko:"ln-llg-bko",lahbas:"ln-lah-bas",lahlum:"ln-lah-lum",muspek:"ln-mus-pek",pagman:"ln-pag-man",tesair:"ln-tes-air",kettap:"ln-ket-tap",pbapltu:"ln-pba-pltu"};
 
   var cur=0, autoTimer=null;
+  // --- Animasi tambahan (Anime.js v4 UMD + Lottie + Ola), 15 Nov 2026 ---
+  // Semua pemakaian di-guarded: bila salah satu lib gagal dimuat, halaman tetap jalan seperti semula.
+  var AN=(typeof window.anime!=="undefined")?window.anime:null;
+  var LT=(typeof window.lottie!=="undefined")?window.lottie:null;
+  var OL=(typeof window.Ola!=="undefined")?window.Ola:null;
+  var freqOla=null, alertAnim=null, checkAnim1=null, checkAnim2=null;
+  function initAnimLibs(){
+    if(LT){
+      try{
+        alertAnim=LT.loadAnimation({container:$("alertRing"),renderer:"svg",loop:true,autoplay:false,path:"vendor/alert-ring.json"});
+        checkAnim1=LT.loadAnimation({container:$("rtoCheck1"),renderer:"svg",loop:false,autoplay:false,path:"vendor/check-pop.json"});
+        checkAnim2=LT.loadAnimation({container:$("rtoCheck2"),renderer:"svg",loop:false,autoplay:false,path:"vendor/check-pop.json"});
+      }catch(e){ alertAnim=null; checkAnim1=null; checkAnim2=null; }
+    }
+    if(OL){ try{ freqOla=OL({f:50.02},1200); }catch(e){ freqOla=null; } }
+    setInterval(function(){
+      if(!freqOla) return;
+      var el=$("freqVal"); if(!el) return;
+      var str=freqOla.f.toFixed(2).replace(".",",");
+      if(el.textContent!==str) el.textContent=str;
+    },50);
+  }
   var $=function(id){return document.getElementById(id)};
 
   function renderGI(p){
@@ -750,6 +781,7 @@ footer .sp{flex:1}
       html+='<div class="gi"><span class="st st-'+s[0]+'"></span><div><b>'+g.name+'</b><p>'+s[3]+'</p></div><span class="tag '+s[1]+'">'+s[2]+'</span></div>';
     });
     $("giList").innerHTML=html;
+    if(AN){ AN.animate("#giList .gi",{opacity:[0,1],translateY:[10,0],delay:AN.stagger(60),duration:400,ease:"outQuad"}); }
   }
   function setNode(id,state){
     var g=$("nd-"+id); if(!g) return;
@@ -776,12 +808,24 @@ footer .sp{flex:1}
     btns.forEach(function(b){ b.classList.toggle("active", +b.getAttribute("data-phase")===p); });
     var banner=$("banner"); banner.className="banner "+P.bannerCls;
     $("bannerIcon").textContent=P.icon; $("bannerTitle").textContent=P.title; $("bannerText").textContent=P.text; $("bannerPhase").textContent=P.name;
+    if(AN){
+      AN.animate("#bannerTitle",{opacity:[0,1],translateY:[8,0],duration:500,ease:"outQuad"});
+      AN.animate("#bannerText",{opacity:[0,1],translateY:[6,0],duration:500,delay:80,ease:"outQuad"});
+    }
+    var ringEl=$("alertRing");
+    if(ringEl){
+      var ringOn=(p===1);
+      $("banner").classList.toggle("alert-on",ringOn);
+      if(alertAnim){ if(ringOn){ alertAnim.goToAndPlay(0,true); } else { alertAnim.stop(); } }
+    }
     $("simClock").textContent=P.sim;
     // KPI
     animateNum($("loadPct"), P.load);
     $("loadSub").textContent=P.loadSub; $("kpiLoad").className="kpi "+P.loadCls;
-    $("freqVal").textContent=P.freq; $("freqSub").textContent=P.freqSub; $("kpiFreq").className="kpi "+P.freqCls;
-    $("giOn").textContent=P.giOn; $("giOnSub").textContent=P.giOnSub;
+    $("freqSub").textContent=P.freqSub; $("kpiFreq").className="kpi "+P.freqCls;
+    var fT=parseFloat(String(P.freq).replace(",","."));
+    if(freqOla && isFinite(fT)){ freqOla.set({f:fT}); } else { $("freqVal").textContent=P.freq; }
+    animateNum($("giOn"),parseInt(P.giOn)||0); $("giOnSub").textContent=P.giOnSub;
     $("scadaVal").textContent=P.scada; $("scadaSub").textContent=P.scadaSub;
     $("kpiScada").className="kpi "+(p===1?"danger":(p===2||p===3?"warn":""));
     // load bar
@@ -791,10 +835,18 @@ footer .sp{flex:1}
     $("barLabel").textContent=P.barLabel;
     // chart
     $("chartProg").setAttribute("points",P.chartProg);
-    $("chartNow").setAttribute("cx",P.chartPt[0]); $("chartNow").setAttribute("cy",P.chartPt[1]);
+    (function(){
+      var dot=$("chartNow");
+      if(AN){
+        var o={x:parseFloat(dot.getAttribute("cx"))||0,y:parseFloat(dot.getAttribute("cy"))||0};
+        AN.animate(o,{x:P.chartPt[0],y:P.chartPt[1],duration:900,ease:"outExpo",onUpdate:function(){ dot.setAttribute("cx",o.x.toFixed(1)); dot.setAttribute("cy",o.y.toFixed(1)); }});
+      }else{ dot.setAttribute("cx",P.chartPt[0]); dot.setAttribute("cy",P.chartPt[1]); }
+    })();
     // RTO
     var b1=$("rtoF1Badge"); b1.textContent=P.rtoF1; b1.className="badge "+P.rtoF1Cls;
     var b2=$("rtoF2Badge"); b2.textContent=P.rtoF2; b2.className="badge "+P.rtoF2Cls;
+    if(checkAnim1){ if(P.rtoF1Cls==="hit"){ checkAnim1.goToAndPlay(0,true); } else { checkAnim1.goToAndStop(0,true); } }
+    if(checkAnim2){ if(P.rtoF2Cls==="hit"){ checkAnim2.goToAndPlay(0,true); } else { checkAnim2.goToAndStop(0,true); } }
     // seis label + penanda fase panel gempa
     $("quakePhase").textContent=QTAG[p];
     $("seisLabel").textContent=P.seis; $("seisLabel").style.color=P.seisColor;
@@ -823,6 +875,7 @@ footer .sp{flex:1}
       var l=+li.getAttribute("data-log");
       li.style.display = l>p ? "none" : "flex";
       li.classList.toggle("nowl", l===p);
+      if(l===p && AN){ AN.animate(li,{opacity:[0.35,1],duration:600,ease:"outQuad"}); }
     });
     // Safety panel is phase-aware: siaga before the quake, roll-call during Fase 1, confirmed safe from Fase 2 on
     document.querySelectorAll("#rollcall .rc").forEach(function(el){
@@ -837,7 +890,13 @@ footer .sp{flex:1}
     renderGI(p); renderDiag(p);
   }
   function animateNum(el,to){
-    var from=parseInt(el.textContent)||0, start=null;
+    var from=parseInt(el.textContent)||0;
+    if(AN){
+      var o={v:from};
+      AN.animate(o,{v:to,duration:900,ease:"outExpo",onUpdate:function(){ el.textContent=Math.round(o.v); }});
+      return;
+    }
+    var start=null;
     function step(ts){ if(!start)start=ts; var k=Math.min(1,(ts-start)/900); el.textContent=Math.round(from+(to-from)*k); if(k<1) requestAnimationFrame(step); }
     requestAnimationFrame(step);
   }
@@ -874,6 +933,7 @@ footer .sp{flex:1}
     var line=$("seisLine"); line.setAttribute("points",pts); line.setAttribute("stroke",col);
   }
   setInterval(drawSeis,110);
+  initAnimLibs();
   setPhase(0);
 })();
 </script>
